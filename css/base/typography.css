@@ -2,9 +2,10 @@
 
 body {
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: 14px;
   color: var(--text);
   background: var(--bg);
+  line-height: 1.5;
 }
 
 h1,
@@ -17,27 +18,39 @@ h4 {
 
 h1,
 h2,
+h3,
 .navbar__brand,
 .stat-tile__value,
 .summary-stat strong,
-.score-ring span {
+.score-ring span,
+.hero__number,
+.quiz-glance__stats dd {
   font-family: var(--font-display);
+  font-weight: 500;
   letter-spacing: -0.02em;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 h1 {
-  font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.1rem);
-  font-weight: 750;
+  font-size: clamp(22px, 18px + 0.8vw, 28px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-family: var(--font-display);
 }
 
 h2 {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  font-family: var(--font-display);
+  line-height: 1.2;
 }
 
 h3 {
-  font-size: 1.05rem;
-  font-weight: 650;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 p {
@@ -53,18 +66,21 @@ a {
 }
 
 kbd {
-  display: inline-block;
+  display: inline-flex;
   min-width: 1.6em;
-  padding: 1px 6px;
+  padding: 0 5px;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 10.5px;
   line-height: 1.4;
   text-align: center;
   color: var(--text-muted);
   background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-bottom-width: 2px;
-  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  border-bottom-width: 1px;
+  border-radius: var(--radius-xs);
+  min-height: 18px;
+  align-items: center;
+  justify-content: center;
 }
 
 code {
@@ -72,7 +88,7 @@ code {
   font-size: 0.9em;
   padding: 1px 5px;
   background: var(--surface-2);
-  border-radius: 5px;
+  border-radius: var(--radius-xs);
 }
 
 .muted {
@@ -84,11 +100,12 @@ code {
 }
 
 .eyebrow {
-  font-size: 0.78rem;
-  font-weight: 650;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--text-muted);
 }
 
 .visually-hidden {
@@ -105,4 +122,20 @@ code {
 
 .prewrap {
   white-space: pre-wrap;
+}
+
+/* Panel titles: the third step of the heading scale */
+.panel h2,
+.chart-panel__header h2,
+.mastery h2,
+.quiz-glance__title {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.faint,
+small.faint {
+  font-size: 12px;
+  color: var(--text-faint);
 }

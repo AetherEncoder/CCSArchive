@@ -10,17 +10,47 @@
 
 /* Study and flip sessions sit as one block in the vertical middle of the screen */
 .session--centered {
-  justify-content: center;
-  min-height: calc(100vh - 160px);
+  max-width: none;
+  padding-top: var(--space-2);
+  min-height: calc(100vh - var(--nav-height) - 80px);
 }
 
 .session--centered > .stack {
-  gap: var(--space-5);
-  margin-top: var(--space-4);
+  gap: var(--space-6);
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.session--centered .flashcard {
+  max-width: 760px;
+  height: 300px;
+}
+
+/* Status/deck badges sit inside the card's top-left corner */
+.flashcard .study-stage__tags {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: 2;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .session--centered {
+    padding-top: 0;
+  }
+
+  .session--centered > .stack {
+    gap: var(--space-4);
+  }
+
+  .session--centered .flashcard {
+    height: 260px;
+  }
 }
 
 .session .progress {
-  height: 6px;
+  height: 4px;
 }
 
 .session-header {
@@ -40,15 +70,15 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2);
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
   color: var(--text-muted);
 }
 
 .session-title {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .study-stage {
@@ -67,11 +97,11 @@
 .study-actions {
   display: flex;
   justify-content: center;
-  min-height: 72px;
+  min-height: 40px;
 }
 
 .study-actions > .btn {
-  min-width: 240px;
+  min-width: 0;
 }
 
 .rating-row {
@@ -79,25 +109,29 @@
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-2);
   width: 100%;
-  max-width: 680px;
+  max-width: none;
 }
 
 .rating {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 10px 6px;
-  font-weight: 700;
-  background: var(--surface);
-  border: 1px solid var(--border-strong);
-  border-bottom-width: 3px;
+  justify-content: center;
+  gap: 3px;
+  min-height: 56px;
+  padding: 6px;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius);
-  transition: transform 0.1s, background 0.15s;
+  transition: transform 0.1s, background 0.15s, border-color 0.15s;
+  font-size: 13px;
 }
 
 .rating:hover {
-  background: var(--surface-2);
+  background: var(--surface-3);
+  border-color: var(--rating-color);
 }
 
 .rating:active {
@@ -110,9 +144,10 @@
 }
 
 .rating small {
-  font-size: 0.78rem;
-  font-weight: 550;
-  color: var(--text-faint);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
 }
 
 .rating kbd {
@@ -120,23 +155,19 @@
 }
 
 .rating--again {
-  color: var(--danger);
-  border-bottom-color: var(--danger);
+  --rating-color: var(--danger);
 }
 
 .rating--hard {
-  color: var(--warning);
-  border-bottom-color: var(--warning);
+  --rating-color: var(--warning);
 }
 
 .rating--good {
-  color: var(--success);
-  border-bottom-color: var(--success);
+  --rating-color: var(--success);
 }
 
 .rating--easy {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
+  --rating-color: var(--info);
 }
 
 .flip-controls {
@@ -147,8 +178,8 @@
 }
 
 .flip-controls .icon-btn {
-  width: 48px;
-  height: 48px;
+  width: 30px;
+  height: 30px;
   background: var(--surface);
   border: 1px solid var(--border-strong);
   border-radius: 50%;
@@ -160,9 +191,13 @@
 
 .kbd-hint {
   max-width: none;
-  font-size: 0.82rem;
+  margin-top: 0;
+  font-size: 12px;
   text-align: center;
   color: var(--text-faint);
+  display: flex;
+  justify-content: center;
+  gap: 12px;
 }
 
 /* Session summary (shared by study, flip, quiz and match) */
@@ -171,28 +206,29 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-4);
-  max-width: 620px;
+  max-width: 560px;
   margin: var(--space-5) auto 0;
   padding: var(--space-6) var(--space-5);
   text-align: center;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
 }
 
 .summary__icon {
   display: grid;
   place-items: center;
-  width: 64px;
-  height: 64px;
-  color: var(--on-primary);
-  background: var(--primary);
-  border-radius: 20px;
+  width: 36px;
+  height: 36px;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent);
+  border-radius: var(--radius);
 }
 
 .summary__icon .icon {
-  width: 32px;
-  height: 32px;
+  width: 18px;
+  height: 18px;
 }
 
 .summary__icon--muted {
@@ -221,12 +257,12 @@
 }
 
 .summary-stat strong {
-  font-size: 1.35rem;
+  font-size: 18px;
   font-variant-numeric: tabular-nums;
 }
 
 .summary-stat span {
-  font-size: 0.82rem;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
@@ -236,7 +272,14 @@
 
 @media (max-width: 640px) {
   .rating-row {
-    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .rating {
+    justify-content: center;
+    min-height: 46px;
+    padding: 6px 2px;
+    font-size: 12px;
   }
 
   .rating kbd {
@@ -249,5 +292,116 @@
 
   .kbd-hint {
     display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Card fills the space between the header and the actions pinned above the tab bar */
+  .session--centered .flashcard {
+    height: 320px;
+  }
+
+  .session--centered .study-actions {
+    position: fixed;
+    right: var(--space-4);
+    bottom: calc(56px + 16px + env(safe-area-inset-bottom));
+    left: var(--space-4);
+    z-index: 5;
+    min-height: 0;
+  }
+
+  .session--centered .study-actions > .btn {
+    width: 100%;
+  }
+
+  .session--centered .kbd-hint {
+    display: none;
+  }
+}
+
+.session--centered > .stack,
+.session--centered > #done {
+  width: 100%;
+  max-width: 760px;
+  margin: auto;
+}
+
+@media (max-width: 640px) {
+  .session--centered {
+    min-height: 0;
+  }
+
+  .session--centered > .stack {
+    margin-top: var(--space-3);
+  }
+}
+
+.session--centered .study-actions > .btn {
+  width: auto;
+  padding: 0 24px;
+  min-height: 36px;
+  font-size: 13px;
+}
+
+.rating > span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rating-color);
+}
+
+.rating small {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Keyboard hints only where there is a keyboard */
+@media (hover: none), (max-width: 640px) {
+  .kbd-hint,
+  .study-actions kbd {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .session--centered .study-actions > .btn {
+    max-width: none;
+  }
+}
+
+.kbd-hint[hidden] {
+  display: none;
+}
+
+.kbd-hint span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (max-width: 640px) {
+  .session--centered {
+    min-height: 0;
+  }
+
+  .session--centered > .stack {
+    margin-top: var(--space-3);
+  }
+
+  .session--centered .study-actions > .btn {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .session--centered .study-actions {
+    position: static;
+  }
+
+  .session--centered .study-actions > .btn {
+    width: 100%;
   }
 }

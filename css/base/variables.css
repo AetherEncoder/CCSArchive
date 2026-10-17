@@ -1,180 +1,251 @@
-/* Design tokens: colors, spacing, radii, light/dark theme */
+/* Design tokens: colors, spacing, radii, light/dark theme.
+   Supabase-style developer-tool look: pure neutral grays (no warm tint), hairline
+   borders, flat surfaces, small radii, one blue brand color, compact controls. */
 
 :root {
   color-scheme: light;
 
-  --font-sans: system-ui, "Segoe UI", -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
-  /* Headings; falls back to the system font when offline */
-  --font-display: "Bricolage Grotesque", var(--font-sans);
-  --font-mono: ui-monospace, "Cascadia Code", Consolas, "SFMono-Regular", monospace;
+  --font-sans: "Geist", "Inter", system-ui, "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
+  /* Headings and big numbers share the UI sans */
+  --font-display: var(--font-sans);
+  --font-mono: "Geist Mono", ui-monospace, "Cascadia Code", Consolas, "SFMono-Regular", monospace;
 
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
-  --space-7: 48px;
-  --space-8: 64px;
+  --space-5: 18px;
+  --space-6: 20px;
+  --space-7: 32px;
+  --space-8: 40px;
 
-  --radius-sm: 8px;
-  --radius: 12px;
-  --radius-lg: 18px;
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-lg: 8px;
+  --section-gap: 32px;
   --radius-pill: 999px;
 
-  --container: 1080px;
-  --nav-height: 64px;
+  --control-h: 28px;
+  --control-h-sm: 24px;
+  --control-h-lg: 32px;
+
+  --container: 1120px;
+  --nav-height: 48px;
   --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
 
-  /* Surfaces & text */
-  --bg: #f7f6f3;
+  /* Surfaces & text: neutral grays */
+  --bg: #fcfcfc;
   --surface: #ffffff;
-  --surface-2: #f0eee9;
-  --surface-3: #e7e4dd;
-  --border: #e3e0d8;
-  --border-strong: #cdc9be;
-  --text: #1c1b1f;
-  --text-muted: #5c5966;
-  --text-faint: #85828d;
+  --surface-2: #f5f5f5;
+  --surface-3: #ededed;
+  --border: #e4e4e4;
+  --border-strong: #d1d1d1;
+  --text: #171717;
+  --text-muted: #525252;
+  --text-faint: #6f6f6f;
+  --grid-line: rgb(0 0 0 / 0.04);
+  --track: rgb(0 0 0 / 0.07);
+  --card-border: #e4e4e4;
+  --chip-bg: #f0f0f0;
+  --chip-text: #3a3a3a;
+  --nav-link: #525252;
+  --chart-axis: #d4d4d4;
+  --bar-hover: #a3a3a3;
+  --placeholder: #8f8f8f;
+  --hint: #6f6f6f;
+  --heat-0: #ededed;
+  --index-rule: rgb(0 0 0 / 0.05);
+  --index-margin: var(--border);
+  --card-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
 
-  /* Brand */
-  --primary: #5b3fd9;
-  --primary-hover: #4a30c2;
-  --primary-soft: #ece8ff;
-  --primary-soft-text: #4126b5;
+  /* Brand: blue */
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-soft: #eef3fe;
+  --primary-soft-text: #1d4ed8;
   --on-primary: #ffffff;
 
-  /* Gamification accent (streaks, XP) */
-  --accent: #e8950c;
-  --accent-soft: #fff2d9;
-  --accent-text: #8a5300;
+  --btn-primary-bg: #2563eb;
+  --btn-primary-hover: #1d4ed8;
+  --btn-primary-border: #1d4ed8;
+  --btn-primary-text: #ffffff;
+
+  /* Gamification accent (streaks) */
+  --accent: #d97706;
+  --accent-soft: #fdf3e3;
+  --accent-text: #92400e;
 
   /* Status */
-  --success: #1c8a4a;
-  --success-soft: #e2f5ea;
-  --danger: #cf2f42;
-  --danger-soft: #fde6e9;
-  --warning: #b86e00;
-  --warning-soft: #fff1dc;
+  --success: #15803d;
+  --success-soft: #e8f5ec;
+  --danger: #dc2626;
+  --danger-soft: #fdecec;
+  --warning: #b45309;
+  --warning-soft: #fdf3e3;
+  --info: #2563eb;
+  --info-soft: #eef3fe;
 
   /* Deck colors */
-  --deck-violet: #6d4aff;
-  --deck-blue: #2f6fec;
-  --deck-teal: #0f948e;
-  --deck-green: #2e9150;
-  --deck-amber: #c98f06;
-  --deck-orange: #e0612a;
-  --deck-rose: #db3f76;
-  --deck-slate: #5b6577;
+  --deck-violet: #6d5bd0;
+  --deck-blue: #2f6fe0;
+  --deck-teal: #0f8a86;
+  --deck-green: #2f8a4f;
+  --deck-amber: #b7860b;
+  --deck-orange: #d0652a;
+  --deck-rose: #c74e7c;
+  --deck-slate: #64748b;
 
-  /* Sequential ramp (one hue, light to dark) for heatmaps */
-  --seq-1: #d9d1ff;
-  --seq-2: #a998ff;
-  --seq-3: #7a5ef0;
-  --seq-4: #4a2ec2;
+  /* Sequential ramp (one hue, light to dark) for heatmaps and charts */
+  --seq-1: #cddcfc;
+  --seq-2: #93b2f6;
+  --seq-3: #4f7fec;
+  --seq-4: #1d4ed8;
 
-  --shadow-sm: 0 1px 2px rgb(28 27 31 / 0.06);
-  --shadow: 0 2px 4px rgb(28 27 31 / 0.04), 0 8px 24px rgb(28 27 31 / 0.07);
-  --shadow-lg: 0 4px 12px rgb(28 27 31 / 0.08), 0 24px 56px rgb(28 27 31 / 0.16);
-  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--primary) 40%, transparent);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.05), 0 2px 8px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 8px 24px rgb(0 0 0 / 0.12);
+  --focus-ring: 0 0 0 1px var(--bg), 0 0 0 3px color-mix(in srgb, var(--primary) 50%, transparent);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
 
-    --bg: #121116;
-    --surface: #1b1a21;
-    --surface-2: #24232b;
-    --surface-3: #2e2d37;
-    --border: #2f2e38;
-    --border-strong: #45434f;
-    --text: #eeedf2;
-    --text-muted: #a9a6b3;
-    --text-faint: #7b7885;
+    --bg: #171717;
+    --surface: #1f1f1f;
+    --surface-2: #262626;
+    --surface-3: #2e2e2e;
+    --border: #2e2e2e;
+    --border-strong: #3e3e3e;
+    --text: #ededed;
+    --text-muted: #a1a1a1;
+    --text-faint: #8b8b8b;
+    --grid-line: rgb(255 255 255 / 0.03);
+    --track: rgb(255 255 255 / 0.08);
+    --card-border: #2e2e2e;
+    --chip-bg: #2a2a2a;
+    --chip-text: #d4d4d4;
+    --nav-link: #a1a1a1;
+    --chart-axis: #363636;
+    --bar-hover: #525252;
+    --placeholder: #6b6b6b;
+    --hint: #8b8b8b;
+    --heat-0: #262626;
+    --index-rule: rgb(255 255 255 / 0.035);
+    --index-margin: var(--border);
+    --card-shadow: none;
 
-    --primary: #9582ff;
-    --primary-hover: #a898ff;
-    --primary-soft: #29234a;
-    --primary-soft-text: #c4b8ff;
-    --on-primary: #140f2e;
+    --primary: #5b93ff;
+    --primary-hover: #7aa8ff;
+    --primary-soft: #14233f;
+    --primary-soft-text: #a3c1ff;
+    --on-primary: #ffffff;
 
-    --accent: #ffb32e;
-    --accent-soft: #3a2b0f;
-    --accent-text: #ffcc73;
+    --btn-primary-bg: #1d4ed8;
+    --btn-primary-hover: #2563eb;
+    --btn-primary-border: #3b74f0;
+    --btn-primary-text: #ffffff;
 
-    --success: #3ccb78;
-    --success-soft: #12301f;
-    --danger: #ff6b7c;
-    --danger-soft: #3a171d;
-    --warning: #ffad3b;
-    --warning-soft: #3a2810;
+    --accent: #f5a524;
+    --accent-soft: #2a1f0e;
+    --accent-text: #fbc56b;
 
-    --deck-violet: #8f76ff;
-    --deck-blue: #5a8ff5;
-    --deck-teal: #2bbab3;
-    --deck-green: #4cbd72;
-    --deck-amber: #e5b030;
-    --deck-orange: #f2834f;
-    --deck-rose: #f06a98;
-    --deck-slate: #8a94a8;
+    --success: #3ecf8e;
+    --success-soft: #0f2a1e;
+    --danger: #f2555a;
+    --danger-soft: #2c1214;
+    --warning: #f5a524;
+    --warning-soft: #2a1f0e;
+    --info: #5b93ff;
+    --info-soft: #14233f;
 
-    --seq-1: #332a66;
-    --seq-2: #5440b0;
-    --seq-3: #7e66f2;
-    --seq-4: #b8a9ff;
+    --deck-violet: #9d92e6;
+    --deck-blue: #6f9cf0;
+    --deck-teal: #5fbdb7;
+    --deck-green: #6fc48a;
+    --deck-amber: #e0b54f;
+    --deck-orange: #ec9563;
+    --deck-rose: #e586a8;
+    --deck-slate: #94a3b8;
 
-    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
-    --shadow: 0 2px 4px rgb(0 0 0 / 0.25), 0 8px 24px rgb(0 0 0 / 0.3);
-    --shadow-lg: 0 4px 12px rgb(0 0 0 / 0.35), 0 24px 56px rgb(0 0 0 / 0.5);
+    --seq-1: #172a4d;
+    --seq-2: #1f4596;
+    --seq-3: #3b6ee6;
+    --seq-4: #7aa5ff;
+
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 2px 8px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 8px 24px rgb(0 0 0 / 0.5);
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-  --bg: #121116;
-  --surface: #1b1a21;
-  --surface-2: #24232b;
-  --surface-3: #2e2d37;
-  --border: #2f2e38;
-  --border-strong: #45434f;
-  --text: #eeedf2;
-  --text-muted: #a9a6b3;
-  --text-faint: #7b7885;
+  --bg: #171717;
+  --surface: #1f1f1f;
+  --surface-2: #262626;
+  --surface-3: #2e2e2e;
+  --border: #2e2e2e;
+  --border-strong: #3e3e3e;
+  --text: #ededed;
+  --text-muted: #a1a1a1;
+  --text-faint: #8b8b8b;
+  --grid-line: rgb(255 255 255 / 0.03);
+  --track: rgb(255 255 255 / 0.08);
+  --card-border: #2e2e2e;
+  --chip-bg: #2a2a2a;
+  --chip-text: #d4d4d4;
+  --nav-link: #a1a1a1;
+  --chart-axis: #363636;
+  --bar-hover: #525252;
+  --placeholder: #6b6b6b;
+  --hint: #8b8b8b;
+  --heat-0: #262626;
+  --index-rule: rgb(255 255 255 / 0.035);
+  --index-margin: var(--border);
+  --card-shadow: none;
 
-  --primary: #9582ff;
-  --primary-hover: #a898ff;
-  --primary-soft: #29234a;
-  --primary-soft-text: #c4b8ff;
-  --on-primary: #140f2e;
+  --primary: #5b93ff;
+  --primary-hover: #7aa8ff;
+  --primary-soft: #14233f;
+  --primary-soft-text: #a3c1ff;
+  --on-primary: #ffffff;
 
-  --accent: #ffb32e;
-  --accent-soft: #3a2b0f;
-  --accent-text: #ffcc73;
+  --btn-primary-bg: #1d4ed8;
+  --btn-primary-hover: #2563eb;
+  --btn-primary-border: #3b74f0;
+  --btn-primary-text: #ffffff;
 
-  --success: #3ccb78;
-  --success-soft: #12301f;
-  --danger: #ff6b7c;
-  --danger-soft: #3a171d;
-  --warning: #ffad3b;
-  --warning-soft: #3a2810;
+  --accent: #f5a524;
+  --accent-soft: #2a1f0e;
+  --accent-text: #fbc56b;
 
-  --deck-violet: #8f76ff;
-  --deck-blue: #5a8ff5;
-  --deck-teal: #2bbab3;
-  --deck-green: #4cbd72;
-  --deck-amber: #e5b030;
-  --deck-orange: #f2834f;
-  --deck-rose: #f06a98;
-  --deck-slate: #8a94a8;
+  --success: #3ecf8e;
+  --success-soft: #0f2a1e;
+  --danger: #f2555a;
+  --danger-soft: #2c1214;
+  --warning: #f5a524;
+  --warning-soft: #2a1f0e;
+  --info: #5b93ff;
+  --info-soft: #14233f;
 
-  --seq-1: #332a66;
-  --seq-2: #5440b0;
-  --seq-3: #7e66f2;
-  --seq-4: #b8a9ff;
+  --deck-violet: #9d92e6;
+  --deck-blue: #6f9cf0;
+  --deck-teal: #5fbdb7;
+  --deck-green: #6fc48a;
+  --deck-amber: #e0b54f;
+  --deck-orange: #ec9563;
+  --deck-rose: #e586a8;
+  --deck-slate: #94a3b8;
 
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
-  --shadow: 0 2px 4px rgb(0 0 0 / 0.25), 0 8px 24px rgb(0 0 0 / 0.3);
-  --shadow-lg: 0 4px 12px rgb(0 0 0 / 0.35), 0 24px 56px rgb(0 0 0 / 0.5);
+  --seq-1: #172a4d;
+  --seq-2: #1f4596;
+  --seq-3: #3b6ee6;
+  --seq-4: #7aa5ff;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 2px 8px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 8px 24px rgb(0 0 0 / 0.5);
 }

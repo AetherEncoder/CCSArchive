@@ -104,7 +104,7 @@ export function studyView(root, { params }) {
             ).join('')}
           </div>
         </div>
-        <p class="kbd-hint"><kbd>Space</kbd> show answer, then Good &nbsp;·&nbsp; <kbd>1</kbd> Again &nbsp;<kbd>2</kbd> Hard &nbsp;<kbd>3</kbd> Good &nbsp;<kbd>4</kbd> Easy</p>
+        <p class="kbd-hint" id="hint-back" hidden><span><kbd>1</kbd> Again</span><span><kbd>2</kbd> Hard</span><span><kbd>3</kbd> Good</span><span><kbd>4</kbd> Easy</span></p>
       </div>
 
       <div id="done" hidden></div>
@@ -117,6 +117,7 @@ export function studyView(root, { params }) {
   const remaining = $('#remaining', root);
   const revealButton = $('#reveal', root);
   const ratingRow = $('#ratings', root);
+  const hintBack = $('#hint-back', root);
   const done = $('#done', root);
 
   const progress = createProgressBar({ max: total, label: 'Session progress' });
@@ -128,12 +129,13 @@ export function studyView(root, { params }) {
     },
   });
   stage.append(flashcard.el);
+  flashcard.el.append(tags);
 
   function updateRatingLabels() {
     for (const button of ratingRow.querySelectorAll('[data-rating]')) {
       const value = Number(button.dataset.rating);
       const days = nextInterval(current.srs, value);
-      button.querySelector('[data-interval]').textContent = value === RATING.AGAIN ? 'again today' : formatInterval(days);
+      button.querySelector('[data-interval]').textContent = value === RATING.AGAIN ? '<10m' : formatInterval(days);
     }
   }
 
@@ -154,6 +156,7 @@ export function studyView(root, { params }) {
 
     ratingRow.hidden = true;
     revealButton.hidden = false;
+    hintBack.hidden = true;
     remaining.textContent = `${total - completed} left`;
     progress.set(completed, total);
     updateRatingLabels();
@@ -165,6 +168,7 @@ export function studyView(root, { params }) {
     flashcard.setFlipped(true);
     revealButton.hidden = true;
     ratingRow.hidden = false;
+    hintBack.hidden = false;
   }
 
   function rate(value) {

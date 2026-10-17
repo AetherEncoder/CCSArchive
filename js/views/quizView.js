@@ -2,7 +2,7 @@
 // (multiple choice, true/false, typed, mixed) or the matching game.
 
 import { getDeck, updateDeck, deckColorVar, markDeckStudied } from '../data/decks.js';
-import { getCardsByDeck } from '../data/cards.js';
+import { getCardsByDeck, getDeckStats } from '../data/cards.js';
 import { getSettings, updateSettings, SETTING_DEFAULTS } from '../data/settings.js';
 import { logReview } from '../data/reviews.js';
 import { QUIZ_MODES, QUESTION_LABELS, getMode, canPlay, buildQuiz, checkTyped, buildMatchTiles, tilesMatch } from '../services/quiz.js';
@@ -62,6 +62,26 @@ export function quizView(root, { params, query }) {
 
   // ---------- Setup ----------
 
+  function glanceHTML() {
+    const stats = getDeckStats(deck.id);
+    const pct = (n) => (stats.total ? (n / stats.total) * 100 : 0);
+    return `
+      <section class="quiz-glance" aria-labelledby="glance-heading">
+        <h3 class="quiz-glance__title" id="glance-heading">Deck at a glance</h3>
+        <div class="mastery__bar" role="img" aria-label="${stats.mastered} mastered, ${stats.learning} learning, ${stats.new} new">
+          <div class="mastery__segment mastery__segment--mastered" style="width:${pct(stats.mastered)}%"></div>
+          <div class="mastery__segment mastery__segment--learning" style="width:${pct(stats.learning)}%"></div>
+          <div class="mastery__segment mastery__segment--new" style="width:${pct(stats.new)}%"></div>
+        </div>
+        <dl class="quiz-glance__stats">
+          <div><dt>Mastered</dt><dd>${stats.mastered}</dd></div>
+          <div><dt>Learning</dt><dd>${stats.learning}</dd></div>
+          <div><dt>New</dt><dd>${stats.new}</dd></div>
+          <div><dt>Due today</dt><dd>${stats.due}</dd></div>
+        </dl>
+      </section>`;
+  }
+
   function renderSetup() {
     const prefs = { ...SETTING_DEFAULTS.quizPrefs, ...getSettings().quizPrefs };
     let mode = getMode(query.mode) ? query.mode : prefs.mode;
@@ -71,6 +91,7 @@ export function quizView(root, { params, query }) {
     const count = counts.includes(prefs.count) ? prefs.count : cards.length;
 
     root.innerHTML = `
+      <div class="quiz-page">
       <a class="back-link" href="${deckHref}">${icon('arrowLeft')} ${escapeHTML(deck.title)}</a>
       <div class="page-header">
         <div class="page-header__text">
@@ -89,16 +110,22 @@ export function quizView(root, { params, query }) {
                 <label class="mode-option">
                   <input type="radio" name="mode" value="${item.id}" ${item.id === mode ? 'checked' : ''} ${check.ok ? '' : 'disabled'}>
                   <span class="mode-option__card">
-                    ${icon(item.icon)}
-                    <strong>${item.label}</strong>
-                    <span>${check.ok ? item.description : check.reason}</span>
+                    <span class="mode-option__icon">${icon(item.icon)}</span>
+                    <span class="mode-option__text">
+                      <strong>${item.label}</strong>
+                      <span>${check.ok ? item.description : check.reason}</span>
+                    </span>
+                    <span class="mode-option__radio" aria-hidden="true"></span>
                   </span>
                 </label>`;
             }).join('')}
           </div>
         </fieldset>
 
+        <div class="quiz-side">
         <div class="panel setup-options">
+          ${glanceHTML()}
+          <hr class="setup-options__divider">
           <p class="muted setup-options__note" id="match-note" hidden>Match ${Math.min(MATCH_PAIRS, cards.length)} pairs as fast as you can. Wrong pairs add 1 second.</p>
           <div class="setup-options__fields" id="quiz-options">
           <label class="field">
@@ -122,7 +149,9 @@ export function quizView(root, { params, query }) {
           </div>
           <button class="btn btn--primary btn--lg setup-options__start" type="submit">${icon('zap')} Start quiz</button>
         </div>
-      </form>`;
+        </div>
+      </form>
+      </div>`;
 
     const form = $('#setup-form', root);
     const options = $('#quiz-options', root);
@@ -348,7 +377,7 @@ export function quizView(root, { params, query }) {
             : percent >= 50
               ? 'Getting there'
               : 'Keep practicing';
-      const remainingNote = outOfLives && questions.length > answered ? ` ${pluralize(questions.length - answered, 'question')} were left.` : '';
+      const remainingNote = outOfLives && questions.length > answered ? ` ${pluralize(questions.length - answered, 'question')} ${questions.length - answered === 1 ? 'was' : 'were'} left.` : '';
 
       showScreen(() => {
         root.innerHTML = `

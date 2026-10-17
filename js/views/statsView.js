@@ -8,10 +8,10 @@ import { progressHTML } from '../components/progressBar.js';
 import { setTitle } from '../router.js';
 import { $, escapeHTML, createEl, pluralize } from '../utils/dom.js';
 import { icon } from '../utils/icons.js';
-import { todayKey, addDays, parseKey, keyFromTimestamp, formatDate } from '../utils/date.js';
+import { todayKey, addDays, parseKey, keyFromTimestamp, formatDate, daysBetween } from '../utils/date.js';
 
 const HEATMAP_WEEKS = 26;
-const HEATMAP_WEEKS_NARROW = 16; // phones show fewer, larger weeks
+const HEATMAP_WEEKS_NARROW = 13; // phones show fewer, larger weeks
 
 // Shade relative to the daily goal: half the goal, the goal, double the goal.
 function heatLevel(count, goal) {
@@ -27,6 +27,15 @@ function dayTip(key, day) {
   if (!day?.total) return `<strong>${date}</strong>No activity`;
   const accuracy = Math.round((day.correct / day.total) * 100);
   return `<strong>${date}</strong>${pluralize(day.total, 'card')} · ${accuracy}% correct`;
+}
+
+// Start at the first week with any activity (at least 16 weeks, at most 26); phones show 16.
+function heatmapWeeks(daily, today) {
+  if (window.matchMedia('(max-width: 480px)').matches) return HEATMAP_WEEKS_NARROW;
+  const first = [...daily.keys()].sort()[0];
+  if (!first) return 16;
+  const weeks = Math.ceil((daysBetween(first, today) + parseKey(today).getDay() + 1) / 7);
+  return Math.min(HEATMAP_WEEKS, Math.max(16, weeks));
 }
 
 function heatmapHTML(daily, goal, today, weeks = HEATMAP_WEEKS) {
@@ -92,8 +101,8 @@ function weekChartHTML(daily, today) {
       const accuracy = day.total ? `${Math.round((day.correct / day.total) * 100)}% correct` : 'No activity';
       const tip = `<strong>${label}</strong>${pluralize(day.total, 'card')}${day.total ? ` · ${accuracy}` : ''}`;
       return `
-        <div class="bar-chart__col ${day.total ? '' : 'is-empty'}" tabindex="0" data-tip="${escapeHTML(tip)}" aria-label="${escapeHTML(`${label}: ${pluralize(day.total, 'card')}, ${accuracy}`)}">
-          <span class="bar-chart__value" aria-hidden="true">${day.total || ''}</span>
+        <div class="bar-chart__col ${day.total ? '' : 'is-empty'} ${day.key === today ? 'is-today' : ''}" tabindex="0" data-tip="${escapeHTML(tip)}" aria-label="${escapeHTML(`${label}: ${pluralize(day.total, 'card')}, ${accuracy}`)}">
+          <span class="bar-chart__value" aria-hidden="true">${day.total}</span>
           <div class="bar-chart__bar" style="height:${(day.total / max) * 100}%"></div>
         </div>`;
     })
@@ -120,7 +129,7 @@ function deckTableHTML(decks, statsByDeck, recentByDeck) {
           <td class="num deck-table__meta" data-label="Cards" data-unit="cards">${stats.total}</td>
           <td class="num deck-table__meta" data-label="Mastered" data-unit="mastered">${mastered}</td>
           <td class="num deck-table__meta" data-label="Due" data-unit="due">${stats.due}</td>
-          <td class="num deck-table__acc" data-label="Accuracy"><span class="acc-pill">${accuracy}</span></td>
+          <td class="num deck-table__acc" data-label="Accuracy"><span class="acc-pill ${recent?.total ? '' : 'is-empty'}">${recent?.total ? accuracy : '—'}</span></td>
           <td class="deck-table__last" data-label="Last studied">${deck.lastStudiedAt ? formatDate(deck.lastStudiedAt, { month: 'short', day: 'numeric' }) : '<span class="faint">Never</span>'}</td>
         </tr>`;
     })
@@ -135,7 +144,7 @@ function deckTableHTML(decks, statsByDeck, recentByDeck) {
             <th scope="col" class="num">Cards</th>
             <th scope="col" class="num">Mastered</th>
             <th scope="col" class="num">Due</th>
-            <th scope="col" class="num">Accuracy (30 days)</th>
+            <th scope="col" class="num">Accuracy (30d)</th>
             <th scope="col">Last studied</th>
           </tr>
         </thead>
@@ -214,43 +223,45 @@ export function statsView(root) {
 
     <div class="stats-tiles">
       <div class="stat-tile">
-        <span class="stat-tile__label">${icon('zap')} Level ${profile.level}</span>
+        <span class="stat-tile__label">Level ${profile.level}</span>
         <span class="stat-tile__value">${profile.xp} <small>XP</small></span>
         ${progressHTML(profile.current, profile.needed, { label: 'Progress to next level', variant: 'sm' })}
         <span class="stat-tile__meta">${profile.needed - profile.current} XP to level ${profile.level + 1}</span>
       </div>
       <div class="stat-tile stat-tile--streak">
-        <span class="stat-tile__label">${icon('flame')} Current streak</span>
+        <span class="stat-tile__label">Current streak</span>
         <span class="stat-tile__value">${profile.streak} <small>${profile.streak === 1 ? 'day' : 'days'}</small></span>
         <span class="stat-tile__meta">Best: ${pluralize(profile.bestStreak, 'day')}</span>
       </div>
       <div class="stat-tile">
-        <span class="stat-tile__label">${icon('trophy')} Mastered</span>
+        <span class="stat-tile__label">Mastered</span>
         <span class="stat-tile__value">${overall.mastered} <small>/ ${overall.total}</small></span>
         <span class="stat-tile__meta">${overall.learning} learning · ${overall.new} new</span>
       </div>
       <div class="stat-tile">
-        <span class="stat-tile__label">${icon('target')} Accuracy</span>
+        <span class="stat-tile__label">Accuracy</span>
         <span class="stat-tile__value">${accuracy}</span>
-        <span class="stat-tile__meta">${pluralize(recentTotal, 'answer')} in the last 30 days</span>
+        <span class="stat-tile__meta">${pluralize(recentTotal, 'answer')} · 30d</span>
       </div>
     </div>
 
-    <section class="section panel chart-panel" id="activity">
+    <div class="stats-charts">
+    <section class="panel chart-panel" id="activity">
       <div class="chart-panel__header">
         <h2>Activity</h2>
-        <p>Darker days got closer to your daily goal of ${profile.dailyGoal}.</p>
+        <p>Brighter cells mean closer to your daily goal of ${profile.dailyGoal}.</p>
       </div>
-      ${heatmapHTML(daily, profile.dailyGoal, today, window.matchMedia('(max-width: 480px)').matches ? HEATMAP_WEEKS_NARROW : HEATMAP_WEEKS)}
+      ${heatmapHTML(daily, profile.dailyGoal, today, heatmapWeeks(daily, today))}
     </section>
 
-    <section class="section panel chart-panel" id="week">
+    <section class="panel chart-panel" id="week">
       <div class="chart-panel__header">
         <h2>Cards answered, last 7 days</h2>
         <p>${pluralize(profile.todayCount, 'card')} today</p>
       </div>
       ${weekChartHTML(daily, today)}
     </section>
+    </div>
 
     <section class="section panel">
       <h2 class="panel__title">Decks</h2>

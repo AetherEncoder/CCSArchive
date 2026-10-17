@@ -1,22 +1,97 @@
 // Dashboard: decks, cards due today, streak
 
-import { getSortedDecks, deckColorVar } from '../data/decks.js';
-import { getAllDeckStats } from '../data/cards.js';
+import { getSortedDecks } from '../data/decks.js';
+import { getAllDeckStats, getCards } from '../data/cards.js';
+import { isDue, isNew } from '../services/srs.js';
+import { deckColorVar } from '../data/decks.js';
 import { getSettings } from '../data/settings.js';
 import { createSampleDeck } from '../data/sampleDeck.js';
 import { getProfile } from '../services/gamification.js';
+import { getDailyCounts } from '../data/reviews.js';
 import { searchDecks, searchCards } from '../services/search.js';
 import { deckCardHTML } from '../components/deckCard.js';
-import { progressHTML } from '../components/progressBar.js';
 import { openImportModal } from '../components/importModal.js';
 import { toast } from '../components/toast.js';
 import { navigate, setTitle } from '../router.js';
-import { $, escapeHTML, pluralize, isTypingTarget, isModalOpen } from '../utils/dom.js';
+import { $, escapeHTML, isTypingTarget, isModalOpen } from '../utils/dom.js';
 import { icon } from '../utils/icons.js';
-import { greeting } from '../utils/date.js';
+import { greeting, todayKey, addDays, formatDate, formatDue } from '../utils/date.js';
 import { cardPrompt, cardAnswer } from '../utils/cardText.js';
 
-function heroHTML(hasDecks, toStudy) {
+// The next few review cards across all decks, oldest due date first.
+function upNextHTML(decks) {
+  const byId = new Map(decks.map((deck) => [deck.id, deck]));
+  const today = todayKey();
+  const due = getCards()
+    .filter((card) => byId.has(card.deckId) && !isNew(card.srs) && isDue(card.srs, today))
+    .sort((a, b) => (a.srs.dueDate < b.srs.dueDate ? -1 : 1));
+  if (!due.length) return '';
+  // Fill whole rows of three on wide screens
+  due.length = due.length >= 6 ? 6 : due.length >= 3 ? 3 : due.length;
+  return `
+    <section class="section" aria-labelledby="next-heading">
+      <div class="section-header">
+        <h2 id="next-heading">Up next</h2>
+        <a class="btn btn--secondary" href="#/study/all">Review all</a>
+      </div>
+      <ol class="up-next">
+        ${due
+          .map((card) => {
+            const deck = byId.get(card.deckId);
+            return `
+          <li class="up-next__item" style="--deck-color:${deckColorVar(deck.color)}">
+            <a href="#/study/${encodeURIComponent(deck.id)}">
+              <span class="up-next__prompt">${escapeHTML(cardPrompt(card))}</span>
+              <span class="up-next__meta"><span class="deck-swatch" aria-hidden="true"></span>${escapeHTML(deck.title)} · ${formatDue(card.srs.dueDate, today)}</span>
+            </a>
+          </li>`;
+          })
+          .join('')}
+      </ol>
+    </section>`;
+}
+
+// Cards answered on each of the last 7 days, as a small bar strip.
+function weekHTML() {
+  const daily = getDailyCounts();
+  const today = todayKey();
+  const days = Array.from({ length: 7 }, (_, i) => {
+    const key = addDays(today, i - 6);
+    return { key, total: daily.get(key)?.total ?? 0 };
+  });
+  const max = Math.max(1, ...days.map((day) => day.total));
+  const sum = days.reduce((total, day) => total + day.total, 0);
+  return `
+    <div class="hero__week">
+      <div class="hero__week-head"><span>This week</span><b>${sum}</b></div>
+      <div class="hero__week-bars" role="img" aria-label="${sum} cards answered in the last 7 days">
+        ${days
+          .map(
+            (day) =>
+              `<span class="hero__week-bar ${day.key === today ? 'is-today' : ''}" style="--h:${(day.total / max) * 100}%" data-value="${day.total}" title="${formatDate(day.key, { weekday: 'short' })}: ${day.total}"></span>`,
+          )
+          .join('')}
+      </div>
+      <div class="hero__week-labels" aria-hidden="true">
+        ${days.map((day) => `<span>${formatDate(day.key, { weekday: 'narrow' })}</span>`).join('')}
+      </div>
+    </div>`;
+}
+
+// Streak, daily goal and level as one sentence-like line.
+function summaryLineHTML(profile) {
+  const streak = profile.streak
+    ? `<b>${profile.streak}</b>-day streak`
+    : 'No streak yet';
+  return `
+    <p class="hero__summary">
+      <span>${streak}</span>
+      <span><b>${profile.todayCount}</b> of ${profile.dailyGoal} cards today</span>
+      <span>Level <b>${profile.level}</b> · ${profile.xp} XP</span>
+    </p>`;
+}
+
+function heroHTML(hasDecks, toStudy, profile) {
   if (!hasDecks) {
     return `
       <div class="hero__text">
@@ -28,47 +103,19 @@ function heroHTML(hasDecks, toStudy) {
     return `
       <div class="hero__text">
         <h1>${greeting()}</h1>
+        ${summaryLineHTML(profile)}
         <p>You're all caught up for today. Nice work!</p>
       </div>`;
   }
   return `
     <div class="hero__text">
       <h1>${greeting()}</h1>
-      <p>You have <strong>${pluralize(toStudy, 'card')}</strong> to study today.</p>
+      ${summaryLineHTML(profile)}
     </div>
-    <div class="hero__actions">
+    <div class="hero__figure">
+      <span class="hero__count"><span class="hero__number">${toStudy}</span>
+      <span class="hero__unit">${toStudy === 1 ? 'card' : 'cards'} to study today</span></span>
       <a class="btn btn--primary btn--lg" href="#/study/all">${icon('target')} Study now</a>
-    </div>`;
-}
-
-function tilesHTML(profile) {
-  const streakMeta = profile.studiedToday
-    ? 'You studied today'
-    : profile.streak
-      ? 'Study today to keep it going'
-      : 'Answer a card to start a streak';
-
-  return `
-    <div class="today-grid">
-      <div class="stat-tile stat-tile--streak">
-        <span class="stat-tile__label">${icon('flame')} Streak</span>
-        <span class="stat-tile__value">${profile.streak} <small>${profile.streak === 1 ? 'day' : 'days'}</small></span>
-        <span class="stat-tile__meta">${streakMeta}</span>
-      </div>
-      <div class="stat-tile">
-        <span class="stat-tile__label">${icon('target')} Daily goal</span>
-        <span class="stat-tile__value">${profile.todayCount} <small>/ ${profile.dailyGoal}</small></span>
-        ${progressHTML(profile.todayCount, profile.dailyGoal, { label: 'Daily goal progress', variant: 'sm accent' })}
-        <span class="stat-tile__meta">${
-          profile.todayCount >= profile.dailyGoal ? 'Goal reached today' : `${profile.dailyGoal - profile.todayCount} more to reach your goal`
-        }</span>
-      </div>
-      <div class="stat-tile">
-        <span class="stat-tile__label">${icon('zap')} Level ${profile.level}</span>
-        <span class="stat-tile__value">${profile.xp} <small>XP</small></span>
-        ${progressHTML(profile.current, profile.needed, { label: 'Progress to next level', variant: 'sm' })}
-        <span class="stat-tile__meta">${profile.needed - profile.current} XP to level ${profile.level + 1}</span>
-      </div>
     </div>`;
 }
 
@@ -102,13 +149,9 @@ export function dashboardView(root) {
     fresh += stats.new;
   }
   const toStudy = due + Math.min(fresh, settings.newPerSession);
-  // Tint the greeting with the color of the first deck that has cards waiting.
-  const nextDeck = decks.find((deck) => statsByDeck.get(deck.id)?.due) ?? decks[0];
-  const heroTint = nextDeck ? deckColorVar(nextDeck.color) : 'var(--primary)';
 
   root.innerHTML = `
-    <section class="hero" style="--hero-tint:${heroTint}">${heroHTML(decks.length > 0, toStudy)}</section>
-    ${tilesHTML(profile)}
+    <section class="hero"><div class="hero__main">${heroHTML(decks.length > 0, toStudy, profile)}</div>${decks.length ? weekHTML() : ''}</section>
 
     <section class="section" aria-labelledby="decks-heading">
       <div class="section-header">
@@ -116,7 +159,7 @@ export function dashboardView(root) {
         ${
           decks.length
             ? `<div class="section-header__actions">
-                <button class="btn btn--secondary" type="button" data-action="import">${icon('upload')} Import</button>
+                <button class="btn btn--secondary deck-import-btn" type="button" data-action="import" aria-label="Import" title="Import">${icon('upload')}<span class="btn__label">Import</span></button>
                 <a class="btn btn--primary" href="#/deck/new">${icon('plus')} New deck</a>
               </div>`
             : ''
@@ -134,7 +177,8 @@ export function dashboardView(root) {
             <div class="search-results" id="search-results"></div>`
           : emptyDecksHTML()
       }
-    </section>`;
+    </section>
+    ${upNextHTML(decks)}`;
 
   const grid = $('#deck-grid', root);
   const results = $('#search-results', root);

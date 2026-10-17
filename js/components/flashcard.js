@@ -65,8 +65,7 @@ export function createFlashcard(card, { reverse = false, deckColor = '', onFlip 
     for (const [face, side] of [[front, 'front'], [back, 'back']]) {
       const { label, body } = faceContent(current, side, reverse);
       face.innerHTML = `
-        <span class="flashcard__label">${label}</span>
-        <div class="flashcard__content">${body}</div>
+        <div class="flashcard__content"><span class="flashcard__label">${label}</span>${body}</div>
         ${side === 'front' ? '<p class="flashcard__hint">Click or tap to flip</p>' : ''}`;
     }
   }

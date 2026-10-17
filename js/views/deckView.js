@@ -57,9 +57,9 @@ function masteryHTML(stats) {
         <div class="mastery__segment mastery__segment--new" style="width:${pct(stats.new)}%"></div>
       </div>
       <div class="mastery__legend">
-        <span><i style="background:var(--seq-4)"></i> Mastered <strong>${stats.mastered}</strong></span>
-        <span><i style="background:var(--seq-2)"></i> Learning <strong>${stats.learning}</strong></span>
-        <span><i style="background:var(--seq-1)"></i> New <strong>${stats.new}</strong></span>
+        <span><i style="background:var(--primary)"></i> Mastered <strong>${stats.mastered}</strong></span>
+        <span><i style="background:var(--warning)"></i> Learning <strong>${stats.learning}</strong></span>
+        <span><i style="background:var(--text-faint)"></i> New <strong>${stats.new}</strong></span>
         ${stats.due ? `<span>${icon('clock')} Due today <strong>${stats.due}</strong></span>` : ''}
       </div>
     </section>`;
@@ -67,28 +67,31 @@ function masteryHTML(stats) {
 
 function modesHTML(deck, cards, toStudy) {
   const id = encodeURIComponent(deck.id);
-  const matchMeta = deck.bestMatchMs ? `Best time ${formatSeconds(deck.bestMatchMs)}` : 'Beat the clock';
   return `
     <section class="mode-grid" aria-label="Study modes">
       <a class="mode-card mode-card--primary" href="#/study/${id}">
-        <span class="mode-card__icon">${icon('target')}</span>
-        <span class="mode-card__title">Study</span>
-        <span class="mode-card__meta">${toStudy ? `${pluralize(toStudy, 'card')} to review` : 'All caught up'}</span>
+        <span class="mode-card__title">Study${icon('target')}</span>
+        <span class="mode-card__figure">${toStudy}</span>
+        <span class="mode-card__meta">${toStudy ? `${toStudy === 1 ? 'card' : 'cards'} to review` : 'All caught up'}</span>
+        <span class="mode-card__cta">Start →</span>
       </a>
       <a class="mode-card" href="#/flip/${id}">
-        <span class="mode-card__icon">${icon('book')}</span>
-        <span class="mode-card__title">Flashcards</span>
-        <span class="mode-card__meta">Flip through all ${cards.length}</span>
+        <span class="mode-card__title">Flashcards${icon('book')}</span>
+        <span class="mode-card__figure">${cards.length}</span>
+        <span class="mode-card__meta">${cards.length === 1 ? 'card' : 'cards'} to flip through</span>
+        <span class="mode-card__cta">Start →</span>
       </a>
       <a class="mode-card" href="#/quiz/${id}">
-        <span class="mode-card__icon">${icon('quiz')}</span>
-        <span class="mode-card__title">Quiz</span>
-        <span class="mode-card__meta">Test yourself</span>
+        <span class="mode-card__title">Quiz${icon('quiz')}</span>
+        <span class="mode-card__figure">5</span>
+        <span class="mode-card__meta">question formats</span>
+        <span class="mode-card__cta">Start →</span>
       </a>
       <a class="mode-card" href="#/quiz/${id}?mode=match">
-        <span class="mode-card__icon">${icon('grid')}</span>
-        <span class="mode-card__title">Match</span>
-        <span class="mode-card__meta">${matchMeta}</span>
+        <span class="mode-card__title">Match${icon('grid')}</span>
+        <span class="mode-card__figure">${deck.bestMatchMs ? formatSeconds(deck.bestMatchMs) : '—'}</span>
+        <span class="mode-card__meta">${deck.bestMatchMs ? 'best time' : 'no best time yet'}</span>
+        <span class="mode-card__cta">Start →</span>
       </a>
     </section>`;
 }
@@ -113,7 +116,7 @@ export function deckView(root, { params }) {
           ${tags ? `<div class="tag-list">${tags}</div>` : ''}
         </div>
         <div class="page-header__actions deck-actions">
-          <a class="btn btn--secondary" href="#/deck/${encodeURIComponent(deck.id)}/edit">${icon('edit')} Edit deck</a>
+          <a class="btn btn--secondary" href="#/deck/${encodeURIComponent(deck.id)}/edit">${icon('edit')}<span class="btn__label">Edit deck</span></a>
           <details class="menu">
             <summary class="btn btn--secondary menu__toggle" aria-label="More actions" title="More actions">${icon('more')}</summary>
             <div class="menu__list">
@@ -138,7 +141,7 @@ export function deckView(root, { params }) {
                 <h2 id="cards-heading">Cards <span class="faint">(${cards.length})</span></h2>
                 <div class="search search--compact">
                   ${icon('search')}
-                  <input class="input input--sm" type="search" id="card-search" placeholder="Search this deck" aria-label="Search this deck">
+                  <input class="input" type="search" id="card-search" placeholder="Search this deck" aria-label="Search this deck">
                 </div>
               </div>
               <ul class="card-list" id="card-list"></ul>

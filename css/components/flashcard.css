@@ -4,7 +4,7 @@
   position: relative;
   width: 100%;
   max-width: 680px;
-  height: clamp(280px, 40vh, 340px);
+  height: 240px;
   margin: 0 auto;
   cursor: pointer;
   perspective: 1600px;
@@ -38,32 +38,35 @@
   inset: 0;
   display: flex;
   flex-direction: column;
-  padding: var(--space-5);
+  padding: var(--space-4);
   overflow: hidden;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: linear-gradient(to bottom, var(--surface-2) 48px, var(--index-margin) 48px 49px, transparent 49px),
+    var(--surface);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
+  box-shadow: var(--card-shadow);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
 .flashcard__face--back {
   transform: rotateY(180deg);
-  border-top: 4px solid var(--deck-color, var(--primary));
 }
 
-.flashcard__face--front {
-  border-top: 4px solid var(--border-strong);
+.flashcard__face--back .flashcard__label {
+  color: var(--primary-soft-text);
 }
+
 
 .flashcard__label {
   flex-shrink: 0;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  text-align: center;
+  color: var(--text-muted);
 }
 
 .flashcard__content {
@@ -81,22 +84,26 @@
 
 .flashcard__text {
   max-width: 34ch;
-  font-size: 1.375rem;
-  font-weight: 600;
-  line-height: 1.4;
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.2;
   white-space: pre-wrap;
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
 }
 
 .flashcard__text.is-medium {
   max-width: 46ch;
-  font-size: 1.25rem;
+  font-size: 22px;
+  line-height: 1.3;
 }
 
 .flashcard__text.is-long {
   max-width: 60ch;
-  font-size: 1.02rem;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 400;
   text-align: left;
+  line-height: 1.45;
 }
 
 .flashcard__note {
@@ -115,9 +122,13 @@
 
 .flashcard__hint {
   flex-shrink: 0;
-  font-size: 0.8rem;
+  font-size: 12px;
   text-align: center;
-  color: var(--text-faint);
+  color: var(--hint);
+  width: 100%;
+  align-self: stretch;
+  max-width: none;
+  opacity: 1;
 }
 
 .cloze-blank {
@@ -131,10 +142,13 @@
 }
 
 .cloze-answer {
-  padding: 0 4px;
-  color: var(--primary-soft-text);
-  background: var(--primary-soft);
-  border-radius: 4px;
+  padding: 1px 4px;
+  color: inherit;
+  background: var(--surface-3);
+  border-radius: var(--radius-sm);
+  box-shadow: none;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
 }
 
 @media (max-width: 640px) {
@@ -149,4 +163,32 @@
   .flashcard__text.is-medium {
     font-size: 1.12rem;
   }
+}
+
+
+@media (max-width: 640px) {
+  .flashcard__text {
+    font-size: 24px;
+  }
+
+  .flashcard__text.is-medium {
+    font-size: 18px;
+  }
+
+  .flashcard__text.is-long {
+    font-size: 14px;
+  }
+}
+
+.flashcard__label,
+.flashcard__text,
+.flashcard__hint {
+  position: relative;
+  padding: 0 8px;
+}
+
+.flashcard__hint {
+  align-self: center;
+  width: auto;
+  line-height: 28px;
 }

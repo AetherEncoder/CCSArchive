@@ -24,9 +24,9 @@
 
 .add-card-btn {
   width: 100%;
-  min-height: 56px;
+  min-height: 36px;
   margin-top: var(--space-3);
-  border: 2px dashed var(--border-strong);
+  border: 1px dashed var(--border-strong);
 }
 
 .add-card-btn:hover {
@@ -43,9 +43,9 @@
 }
 
 .bulk-panel textarea.input {
-  min-height: 160px;
+  min-height: 140px;
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 12px;
 }
 
 .bulk-panel__controls {
@@ -57,7 +57,7 @@
 }
 
 .bulk-panel__status {
-  font-size: 0.9rem;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
@@ -78,7 +78,7 @@
 }
 
 .editor-footer__info {
-  font-size: 0.88rem;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
@@ -88,6 +88,10 @@
 }
 
 @media (max-width: 640px) {
+  .editor-footer {
+    bottom: calc(56px + env(safe-area-inset-bottom));
+  }
+
   .editor__details {
     grid-template-columns: 1fr;
   }

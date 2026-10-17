@@ -8,8 +8,8 @@
 }
 
 .field__label {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
   color: var(--text-muted);
 }
 
@@ -26,13 +26,13 @@
 
 .input {
   width: 100%;
-  min-height: 42px;
-  padding: 9px 12px;
-  font-size: 0.97rem;
+  min-height: var(--control-h);
+  padding: 4px 10px;
+  font-size: 13px;
   color: var(--text);
   background: var(--surface);
   border: 1px solid var(--border-strong);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
@@ -55,25 +55,25 @@
 }
 
 textarea.input {
-  min-height: 72px;
+  min-height: 64px;
   line-height: 1.45;
   resize: vertical;
 }
 
 select.input {
-  padding-right: 36px;
+  padding-right: 30px;
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2385828d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23898989' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 18px;
+  background-position: right 8px center;
+  background-size: 15px;
 }
 
 .input--sm {
-  min-height: 34px;
-  padding: 5px 10px;
-  font-size: 0.9rem;
+  min-height: var(--control-h-sm);
+  padding: 2px 8px;
+  font-size: 12px;
 }
 
 /* Search box with a leading icon */
@@ -85,16 +85,16 @@ select.input {
 .search .icon {
   position: absolute;
   top: 50%;
-  left: 12px;
-  width: 17px;
-  height: 17px;
+  left: 9px;
+  width: 14px;
+  height: 14px;
   color: var(--text-faint);
   transform: translateY(-50%);
   pointer-events: none;
 }
 
 .search .input {
-  padding-left: 38px;
+  padding-left: 29px;
 }
 
 /* Switch (checkbox styled as a toggle) */
@@ -108,8 +108,8 @@ select.input {
 .switch input {
   position: relative;
   flex-shrink: 0;
-  width: 42px;
-  height: 24px;
+  width: 28px;
+  height: 16px;
   cursor: pointer;
   appearance: none;
   background: var(--surface-3);
@@ -120,10 +120,10 @@ select.input {
 .switch input::after {
   content: "";
   position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 18px;
-  height: 18px;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
   background: #fff;
   border-radius: 50%;
   box-shadow: var(--shadow-sm);
@@ -135,7 +135,7 @@ select.input {
 }
 
 .switch input:checked::after {
-  transform: translateX(18px);
+  transform: translateX(12px);
 }
 
 .switch input:focus-visible {
@@ -148,7 +148,7 @@ select.input {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 2px;
-  padding: 3px;
+  padding: 2px;
   background: var(--surface-2);
   border-radius: var(--radius);
 }
@@ -165,12 +165,12 @@ select.input {
 
 .segmented span {
   display: block;
-  padding: 7px 16px;
-  font-size: 0.9rem;
-  font-weight: 600;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 500;
   color: var(--text-muted);
   cursor: pointer;
-  border-radius: 9px;
+  border-radius: var(--radius-sm);
   transition: background 0.15s, color 0.15s;
 }
 
@@ -202,11 +202,11 @@ select.input {
 
 .color-swatch span {
   display: block;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   background: var(--swatch);
-  border-radius: 50%;
+  border-radius: var(--radius-sm);
   box-shadow: inset 0 0 0 2px rgb(0 0 0 / 0.08);
   transition: transform 0.15s;
 }
@@ -235,7 +235,7 @@ select.input {
   color: var(--text-muted);
   cursor: pointer;
   background: var(--surface-2);
-  border: 2px dashed var(--border-strong);
+  border: 1px dashed var(--border-strong);
   border-radius: var(--radius);
   transition: border-color 0.15s, background 0.15s;
 }
@@ -247,8 +247,8 @@ select.input {
 }
 
 .file-drop .icon {
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   color: var(--primary);
 }
 

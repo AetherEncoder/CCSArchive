@@ -1,7 +1,7 @@
 /* Modal dialogs */
 
 .modal {
-  width: min(520px, calc(100vw - 32px));
+  width: min(480px, calc(100vw - 32px));
   max-height: calc(100vh - 48px);
   padding: 0;
   margin: auto;
@@ -12,11 +12,11 @@
 }
 
 .modal--lg {
-  width: min(680px, calc(100vw - 32px));
+  width: min(640px, calc(100vw - 32px));
 }
 
 .modal::backdrop {
-  background: rgb(10 8 20 / 0.5);
+  background: rgb(0 0 0 / 0.55);
   backdrop-filter: blur(2px);
 }
 

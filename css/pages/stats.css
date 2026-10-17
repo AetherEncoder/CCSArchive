@@ -1,1 +1,337 @@
 /* Stats and progress page */
+
+.stats-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-3);
+}
+
+.chart-panel {
+  position: relative;
+}
+
+.chart-panel__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.chart-panel__header p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+/* Activity heatmap: columns are weeks, rows are weekdays */
+.heatmap {
+  display: grid;
+  grid-template-columns: auto repeat(var(--weeks), minmax(0, 1fr));
+  grid-template-rows: auto repeat(7, auto);
+  gap: 4px;
+}
+
+@media (max-width: 640px) {
+  .heatmap {
+    gap: 3px;
+  }
+}
+
+.heatmap__month {
+  grid-row: 1;
+  padding-bottom: 2px;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.heatmap__day {
+  grid-column: 1;
+  align-self: center;
+  padding-right: 6px;
+  font-size: 0.72rem;
+  line-height: 1;
+  color: var(--text-faint);
+}
+
+.heatmap__cell {
+  aspect-ratio: 1;
+  background: var(--surface-2);
+  border-radius: 4px;
+}
+
+.heatmap__cell[data-level="1"] {
+  background: var(--seq-1);
+}
+
+.heatmap__cell[data-level="2"] {
+  background: var(--seq-2);
+}
+
+.heatmap__cell[data-level="3"] {
+  background: var(--seq-3);
+}
+
+.heatmap__cell[data-level="4"] {
+  background: var(--seq-4);
+}
+
+.heatmap__cell.is-future {
+  visibility: hidden;
+}
+
+.heatmap__cell.is-today {
+  box-shadow: 0 0 0 1.5px var(--text-muted);
+}
+
+.heatmap__cell:hover,
+.heatmap__cell:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 1px;
+}
+
+.heatmap__legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: var(--space-3);
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+.heatmap__legend .heatmap__cell {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.heatmap__legend .heatmap__cell:hover {
+  outline: none;
+}
+
+/* Last 7 days bar chart */
+.bar-chart {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  align-items: end;
+  gap: var(--space-3);
+  height: 164px;
+  padding-top: var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.bar-chart__col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  cursor: default;
+}
+
+.bar-chart__value {
+  margin-bottom: 4px;
+  font-size: 0.78rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.bar-chart__bar {
+  width: min(36px, 70%);
+  min-height: 2px;
+  background: var(--seq-3);
+  border-radius: 6px 6px 0 0;
+  transition: background 0.15s;
+}
+
+.bar-chart__col:hover .bar-chart__bar,
+.bar-chart__col:focus-visible .bar-chart__bar {
+  background: var(--seq-4);
+}
+
+.bar-chart__col:focus-visible {
+  outline: none;
+}
+
+.bar-chart__col.is-empty .bar-chart__bar {
+  background: var(--surface-3);
+}
+
+.bar-chart__labels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+  font-size: 0.78rem;
+  text-align: center;
+  color: var(--text-faint);
+}
+
+.bar-chart__labels .is-today {
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Floating tooltip shared by the charts */
+.chart-tooltip {
+  position: fixed;
+  z-index: 40;
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--surface);
+  background: var(--text);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  transform: translate(-50%, calc(-100% - 10px));
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.chart-tooltip strong {
+  display: block;
+}
+
+/* Per-deck table */
+.table-wrap {
+  overflow-x: auto;
+}
+
+.deck-table {
+  width: 100%;
+  font-size: 0.92rem;
+  border-collapse: collapse;
+}
+
+.deck-table th,
+.deck-table td {
+  padding: var(--space-3);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.deck-table th {
+  font-size: 0.8rem;
+  font-weight: 650;
+  color: var(--text-faint);
+}
+
+.deck-table td.num,
+.deck-table th.num {
+  width: 96px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.deck-table th:last-child,
+.deck-table td:last-child {
+  padding-left: 40px;
+}
+
+.deck-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.deck-table a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.deck-table a:hover {
+  text-decoration: underline;
+}
+
+/* Below 640px each deck is one row: name + accuracy pill, then "10 cards · 50% mastered · 2 due" */
+@media (max-width: 640px) {
+  .deck-table thead,
+  .deck-table__last {
+    display: none !important;
+  }
+
+  .deck-table,
+  .deck-table tbody {
+    display: block;
+  }
+
+  .deck-table tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 4px;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .deck-table tr:last-child {
+    border-bottom: 0;
+  }
+
+  .deck-table td,
+  .deck-table td.num {
+    padding: 0;
+    text-align: left;
+    border: 0;
+  }
+
+  .deck-table td:first-child {
+    flex: 0 0 calc(100% - 64px);
+    font-size: 0.94rem;
+  }
+
+  .deck-table td:first-child a {
+    font-weight: 600;
+  }
+
+  .deck-table__acc {
+    order: 1;
+    flex: 0 0 64px;
+    text-align: right !important;
+  }
+
+  .acc-pill {
+    display: inline-block;
+    padding: 2px 9px;
+    font-size: 0.8rem;
+    font-weight: 650;
+    background: var(--surface-2);
+    border-radius: var(--radius-pill);
+  }
+
+  .deck-table__meta {
+    order: 2;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .deck-table__meta::after {
+    content: " " attr(data-unit);
+  }
+
+  .deck-table__meta + .deck-table__meta::before {
+    content: "\00a0·\00a0";
+    color: var(--text-faint);
+  }
+
+  .deck-table td.deck-table__meta:nth-child(2) {
+    padding-left: 18px;
+  }
+}
+
+.deck-table__acc {
+  font-variant-numeric: tabular-nums;
+}
+
+.deck-dot {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  background: var(--deck-color, var(--primary));
+  border-radius: 50%;
+}

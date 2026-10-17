@@ -1,1 +1,24 @@
 /* Single stylesheet linked in index.html; @imports all other CSS files */
+
+@import url("base/reset.css");
+@import url("base/variables.css");
+@import url("base/typography.css");
+
+@import url("layout/navbar.css");
+@import url("layout/grid.css");
+
+@import url("components/button.css");
+@import url("components/form.css");
+@import url("components/progress-bar.css");
+@import url("components/flashcard.css");
+@import url("components/card-editor.css");
+@import url("components/modal.css");
+@import url("components/toast.css");
+
+@import url("pages/dashboard.css");
+@import url("pages/deck.css");
+@import url("pages/editor.css");
+@import url("pages/study.css");
+@import url("pages/quiz.css");
+@import url("pages/stats.css");
+@import url("pages/settings.css");

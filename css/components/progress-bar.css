@@ -1,1 +1,40 @@
 /* Progress bars */
+
+.progress {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  overflow: hidden;
+  background: var(--surface-3);
+  border-radius: var(--radius-pill);
+}
+
+/* Full-width fill slid in from the left (translateX keeps the rounded end intact) */
+.progress__fill {
+  height: 100%;
+  width: 100%;
+  background: var(--primary);
+  border-radius: inherit;
+  transform: translateX(-100%);
+  transition: transform 0.35s var(--ease);
+}
+
+.progress--sm {
+  height: 6px;
+}
+
+.progress--lg {
+  height: 10px;
+}
+
+.progress--accent .progress__fill {
+  background: var(--accent);
+}
+
+.progress--success .progress__fill {
+  background: var(--success);
+}
+
+.progress--deck .progress__fill {
+  background: var(--deck-color, var(--primary));
+}

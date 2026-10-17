@@ -1,0 +1,57 @@
+/* Settings page */
+
+.settings-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--border);
+}
+
+.panel__title + .settings-row,
+.panel > p + .settings-row {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.settings-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  max-width: 56ch;
+}
+
+.settings-row__text span {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.settings-row > .input {
+  width: 110px;
+}
+
+.shortcut-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  font-size: 0.92rem;
+}
+
+.shortcut-list dt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.shortcut-list dd {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.danger-zone {
+  border-color: color-mix(in srgb, var(--danger) 35%, var(--border));
+}

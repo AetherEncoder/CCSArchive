@@ -1,1 +1,135 @@
 /* Front/back input rows in the editor */
+
+.card-row {
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.card-row:focus-within {
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+}
+
+.card-row.has-error {
+  border-color: var(--danger);
+}
+
+.card-row.is-entering {
+  animation: row-in 0.25s var(--ease);
+}
+
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+.card-row__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.card-row__index {
+  min-width: 24px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-faint);
+}
+
+.card-row__type {
+  width: auto;
+}
+
+.card-row__tools {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.card-row__fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.card-row__fields textarea.input {
+  min-height: 64px;
+  overflow: hidden;
+  resize: none;
+}
+
+.card-row__choices {
+  margin-top: var(--space-3);
+}
+
+.card-row__choices-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.card-row__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.card-row__footer:empty {
+  display: none;
+}
+
+.card-row__image {
+  position: relative;
+  display: inline-block;
+}
+
+.card-row__image img {
+  max-height: 96px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.card-row__image .icon-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 26px;
+  height: 26px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+}
+
+.card-row__image .icon-btn .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.card-row__hint {
+  font-size: 0.85rem;
+  color: var(--text-faint);
+}
+
+.card-row > .field__error {
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 640px) {
+  .card-row__fields,
+  .card-row__choices-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-row {
+    padding: var(--space-3);
+  }
+}

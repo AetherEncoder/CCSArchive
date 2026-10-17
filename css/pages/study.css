@@ -1,1 +1,253 @@
-/* Study (spaced repetition) session */
+/* Study (spaced repetition) session, flip mode and session summaries */
+
+.session {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* Study and flip sessions sit as one block in the vertical middle of the screen */
+.session--centered {
+  justify-content: center;
+  min-height: calc(100vh - 160px);
+}
+
+.session--centered > .stack {
+  gap: var(--space-5);
+  margin-top: var(--space-4);
+}
+
+.session .progress {
+  height: 6px;
+}
+
+.session-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.session-header .back-link {
+  margin-bottom: 0;
+}
+
+.session-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.session-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.study-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  touch-action: pan-y;
+}
+
+.study-stage__tags {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.study-actions {
+  display: flex;
+  justify-content: center;
+  min-height: 72px;
+}
+
+.study-actions > .btn {
+  min-width: 240px;
+}
+
+.rating-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 680px;
+}
+
+.rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 6px;
+  font-weight: 700;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-bottom-width: 3px;
+  border-radius: var(--radius);
+  transition: transform 0.1s, background 0.15s;
+}
+
+.rating:hover {
+  background: var(--surface-2);
+}
+
+.rating:active {
+  transform: translateY(1px);
+}
+
+.rating:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.rating small {
+  font-size: 0.78rem;
+  font-weight: 550;
+  color: var(--text-faint);
+}
+
+.rating kbd {
+  margin-top: 2px;
+}
+
+.rating--again {
+  color: var(--danger);
+  border-bottom-color: var(--danger);
+}
+
+.rating--hard {
+  color: var(--warning);
+  border-bottom-color: var(--warning);
+}
+
+.rating--good {
+  color: var(--success);
+  border-bottom-color: var(--success);
+}
+
+.rating--easy {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.flip-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.flip-controls .icon-btn {
+  width: 48px;
+  height: 48px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+}
+
+.flip-controls .icon-btn:disabled {
+  opacity: 0.4;
+}
+
+.kbd-hint {
+  max-width: none;
+  font-size: 0.82rem;
+  text-align: center;
+  color: var(--text-faint);
+}
+
+/* Session summary (shared by study, flip, quiz and match) */
+.summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: 620px;
+  margin: var(--space-5) auto 0;
+  padding: var(--space-6) var(--space-5);
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.summary__icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  color: var(--on-primary);
+  background: var(--primary);
+  border-radius: 20px;
+}
+
+.summary__icon .icon {
+  width: 32px;
+  height: 32px;
+}
+
+.summary__icon--muted {
+  color: var(--text-muted);
+  background: var(--surface-2);
+}
+
+.summary > p {
+  color: var(--text-muted);
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.summary-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3);
+  background: var(--surface-2);
+  border-radius: var(--radius);
+}
+
+.summary-stat strong {
+  font-size: 1.35rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-stat span {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.summary .row {
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .rating-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rating kbd {
+    display: none;
+  }
+
+  .study-actions > .btn {
+    width: 100%;
+  }
+
+  .kbd-hint {
+    display: none;
+  }
+}

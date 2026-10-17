@@ -1,1 +1,180 @@
 /* Design tokens: colors, spacing, radii, light/dark theme */
+
+:root {
+  color-scheme: light;
+
+  --font-sans: system-ui, "Segoe UI", -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Headings; falls back to the system font when offline */
+  --font-display: "Bricolage Grotesque", var(--font-sans);
+  --font-mono: ui-monospace, "Cascadia Code", Consolas, "SFMono-Regular", monospace;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  --container: 1080px;
+  --nav-height: 64px;
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  /* Surfaces & text */
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --surface-2: #f0eee9;
+  --surface-3: #e7e4dd;
+  --border: #e3e0d8;
+  --border-strong: #cdc9be;
+  --text: #1c1b1f;
+  --text-muted: #5c5966;
+  --text-faint: #85828d;
+
+  /* Brand */
+  --primary: #5b3fd9;
+  --primary-hover: #4a30c2;
+  --primary-soft: #ece8ff;
+  --primary-soft-text: #4126b5;
+  --on-primary: #ffffff;
+
+  /* Gamification accent (streaks, XP) */
+  --accent: #e8950c;
+  --accent-soft: #fff2d9;
+  --accent-text: #8a5300;
+
+  /* Status */
+  --success: #1c8a4a;
+  --success-soft: #e2f5ea;
+  --danger: #cf2f42;
+  --danger-soft: #fde6e9;
+  --warning: #b86e00;
+  --warning-soft: #fff1dc;
+
+  /* Deck colors */
+  --deck-violet: #6d4aff;
+  --deck-blue: #2f6fec;
+  --deck-teal: #0f948e;
+  --deck-green: #2e9150;
+  --deck-amber: #c98f06;
+  --deck-orange: #e0612a;
+  --deck-rose: #db3f76;
+  --deck-slate: #5b6577;
+
+  /* Sequential ramp (one hue, light to dark) for heatmaps */
+  --seq-1: #d9d1ff;
+  --seq-2: #a998ff;
+  --seq-3: #7a5ef0;
+  --seq-4: #4a2ec2;
+
+  --shadow-sm: 0 1px 2px rgb(28 27 31 / 0.06);
+  --shadow: 0 2px 4px rgb(28 27 31 / 0.04), 0 8px 24px rgb(28 27 31 / 0.07);
+  --shadow-lg: 0 4px 12px rgb(28 27 31 / 0.08), 0 24px 56px rgb(28 27 31 / 0.16);
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--primary) 40%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --bg: #121116;
+    --surface: #1b1a21;
+    --surface-2: #24232b;
+    --surface-3: #2e2d37;
+    --border: #2f2e38;
+    --border-strong: #45434f;
+    --text: #eeedf2;
+    --text-muted: #a9a6b3;
+    --text-faint: #7b7885;
+
+    --primary: #9582ff;
+    --primary-hover: #a898ff;
+    --primary-soft: #29234a;
+    --primary-soft-text: #c4b8ff;
+    --on-primary: #140f2e;
+
+    --accent: #ffb32e;
+    --accent-soft: #3a2b0f;
+    --accent-text: #ffcc73;
+
+    --success: #3ccb78;
+    --success-soft: #12301f;
+    --danger: #ff6b7c;
+    --danger-soft: #3a171d;
+    --warning: #ffad3b;
+    --warning-soft: #3a2810;
+
+    --deck-violet: #8f76ff;
+    --deck-blue: #5a8ff5;
+    --deck-teal: #2bbab3;
+    --deck-green: #4cbd72;
+    --deck-amber: #e5b030;
+    --deck-orange: #f2834f;
+    --deck-rose: #f06a98;
+    --deck-slate: #8a94a8;
+
+    --seq-1: #332a66;
+    --seq-2: #5440b0;
+    --seq-3: #7e66f2;
+    --seq-4: #b8a9ff;
+
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+    --shadow: 0 2px 4px rgb(0 0 0 / 0.25), 0 8px 24px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 4px 12px rgb(0 0 0 / 0.35), 0 24px 56px rgb(0 0 0 / 0.5);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #121116;
+  --surface: #1b1a21;
+  --surface-2: #24232b;
+  --surface-3: #2e2d37;
+  --border: #2f2e38;
+  --border-strong: #45434f;
+  --text: #eeedf2;
+  --text-muted: #a9a6b3;
+  --text-faint: #7b7885;
+
+  --primary: #9582ff;
+  --primary-hover: #a898ff;
+  --primary-soft: #29234a;
+  --primary-soft-text: #c4b8ff;
+  --on-primary: #140f2e;
+
+  --accent: #ffb32e;
+  --accent-soft: #3a2b0f;
+  --accent-text: #ffcc73;
+
+  --success: #3ccb78;
+  --success-soft: #12301f;
+  --danger: #ff6b7c;
+  --danger-soft: #3a171d;
+  --warning: #ffad3b;
+  --warning-soft: #3a2810;
+
+  --deck-violet: #8f76ff;
+  --deck-blue: #5a8ff5;
+  --deck-teal: #2bbab3;
+  --deck-green: #4cbd72;
+  --deck-amber: #e5b030;
+  --deck-orange: #f2834f;
+  --deck-rose: #f06a98;
+  --deck-slate: #8a94a8;
+
+  --seq-1: #332a66;
+  --seq-2: #5440b0;
+  --seq-3: #7e66f2;
+  --seq-4: #b8a9ff;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow: 0 2px 4px rgb(0 0 0 / 0.25), 0 8px 24px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 4px 12px rgb(0 0 0 / 0.35), 0 24px 56px rgb(0 0 0 / 0.5);
+}

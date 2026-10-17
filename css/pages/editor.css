@@ -1,1 +1,99 @@
 /* Deck/card editor page */
+
+.editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.editor__details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.editor__details .field--wide {
+  grid-column: 1 / -1;
+}
+
+.card-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.add-card-btn {
+  width: 100%;
+  min-height: 56px;
+  margin-top: var(--space-3);
+  border: 2px dashed var(--border-strong);
+}
+
+.add-card-btn:hover {
+  color: var(--primary-soft-text);
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+
+.bulk-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.bulk-panel textarea.input {
+  min-height: 160px;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+
+.bulk-panel__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.bulk-panel__status {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.editor-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin: 0 calc(var(--space-4) * -1);
+  padding: var(--space-3) var(--space-4);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+}
+
+.editor-footer__info {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.editor-footer__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+@media (max-width: 640px) {
+  .editor__details {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-footer__info kbd,
+  .editor-footer__shortcut {
+    display: none;
+  }
+}

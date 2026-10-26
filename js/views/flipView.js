@@ -55,7 +55,7 @@ export function flipView(root, { params }) {
           <button class="btn btn--secondary" type="button" id="flip">${icon('rotate')} Flip</button>
           <button class="icon-btn" type="button" id="next" aria-label="Next card">${icon('chevronRight')}</button>
         </div>
-        <p class="kbd-hint"><kbd>Space</kbd> flip &nbsp;·&nbsp; <kbd>←</kbd> <kbd>→</kbd> previous / next</p>
+        <p class="kbd-hint"><span><kbd>Space</kbd> flip</span><span><kbd>←</kbd><kbd>→</kbd> previous / next</span></p>
       </div>
 
       <div id="done" hidden></div>

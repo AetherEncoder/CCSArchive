@@ -70,11 +70,11 @@
 
 .btn--danger {
   color: #fff;
-  background: var(--danger);
+  background: var(--btn-danger-bg);
 }
 
 .btn--danger:hover {
-  background: color-mix(in srgb, var(--danger) 85%, black);
+  background: color-mix(in srgb, var(--btn-danger-bg) 85%, black);
 }
 
 .btn--danger-ghost {
@@ -124,6 +124,19 @@
   color: var(--text-muted);
   border-radius: var(--radius);
   transition: background 0.15s, color 0.15s;
+}
+
+@media (max-width: 640px) {
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .btn,
+  .btn--sm {
+    min-height: 36px;
+    padding: 0 12px;
+  }
 }
 
 .icon-btn:hover {

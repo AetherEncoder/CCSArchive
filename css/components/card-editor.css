@@ -1,7 +1,7 @@
 /* Front/back input rows in the editor */
 
 .card-row {
-  padding: var(--space-3);
+  padding: var(--space-5);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -68,6 +68,12 @@
   margin-top: var(--space-3);
 }
 
+.card-row__choices .input {
+  min-height: var(--control-h);
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
 .card-row__choices-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -130,6 +136,10 @@
   }
 
   .card-row {
-    padding: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .card-row__choices .input {
+    min-height: 36px;
   }
 }

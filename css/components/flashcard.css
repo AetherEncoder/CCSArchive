@@ -49,6 +49,11 @@
   -webkit-backface-visibility: hidden;
 }
 
+/* The header strip holds the study badges; flip mode has none, so drop it */
+.flashcard:not(:has(.study-stage__tags)) .flashcard__face {
+  background: var(--surface);
+}
+
 .flashcard__face--back {
   transform: rotateY(180deg);
 }

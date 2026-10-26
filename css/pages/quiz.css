@@ -455,7 +455,7 @@
 }
 
 .match-tile--answer {
-  color: var(--text-muted);
+  font-weight: 400;
 }
 
 .match-tile.is-selected {

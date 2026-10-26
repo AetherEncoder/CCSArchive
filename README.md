@@ -12,6 +12,8 @@ ES modules don't load from `file://`, so serve the folder with a local server:
 
 ## Features
 
+The short list. [FEATURES.md](FEATURES.md) describes every feature in detail.
+
 - **Decks:** create, edit, tag, color, search and delete them. Each card is one of:
   - **Basic:** term and definition.
   - **Fill in the blank:** for example `The {{CPU}} executes instructions.`

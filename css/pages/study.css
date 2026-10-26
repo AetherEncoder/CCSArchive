@@ -8,17 +8,14 @@
   margin: 0 auto;
 }
 
-/* Study and flip sessions sit as one block in the vertical middle of the screen */
+/* Study and flip sessions: the card sits at a fixed height so revealing the answer doesn't move it */
 .session--centered {
   max-width: none;
-  padding-top: var(--space-2);
   min-height: calc(100vh - var(--nav-height) - 80px);
 }
 
 .session--centered > .stack {
   gap: var(--space-6);
-  margin-top: auto;
-  margin-bottom: auto;
 }
 
 .session--centered .flashcard {
@@ -59,6 +56,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
+  min-height: var(--control-h);
 }
 
 .session-header .back-link {
@@ -183,6 +181,17 @@
   background: var(--surface);
   border: 1px solid var(--border-strong);
   border-radius: 50%;
+}
+
+@media (max-width: 640px) {
+  .flip-controls .icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .flip-controls .btn {
+    min-height: 40px;
+  }
 }
 
 .flip-controls .icon-btn:disabled {
@@ -323,7 +332,7 @@
 .session--centered > #done {
   width: 100%;
   max-width: 760px;
-  margin: auto;
+  margin: calc(var(--space-7) * 2) auto 0;
 }
 
 @media (max-width: 640px) {

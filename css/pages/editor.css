@@ -70,10 +70,8 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  margin: 0 calc(var(--space-4) * -1);
-  padding: var(--space-3) var(--space-4);
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(10px);
+  padding: var(--space-3) 0;
+  background: var(--bg);
   border-top: 1px solid var(--border);
 }
 
@@ -96,8 +94,12 @@
     grid-template-columns: 1fr;
   }
 
-  .editor-footer__info kbd,
+  .editor-footer__info,
   .editor-footer__shortcut {
     display: none;
+  }
+
+  .editor-footer {
+    justify-content: flex-end;
   }
 }

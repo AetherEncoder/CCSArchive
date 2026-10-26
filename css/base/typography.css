@@ -67,10 +67,10 @@ a {
 
 kbd {
   display: inline-flex;
-  min-width: 1.6em;
+  min-width: 20px;
   padding: 0 5px;
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 11px;
   line-height: 1.4;
   text-align: center;
   color: var(--text-muted);

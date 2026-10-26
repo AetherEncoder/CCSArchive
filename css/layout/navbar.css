@@ -149,8 +149,7 @@
     height: calc(56px + env(safe-area-inset-bottom));
     margin: 0;
     padding-bottom: env(safe-area-inset-bottom);
-    background: color-mix(in srgb, var(--surface) 92%, transparent);
-    backdrop-filter: blur(12px);
+    background: var(--surface);
     border-top: 1px solid var(--border);
   }
 
